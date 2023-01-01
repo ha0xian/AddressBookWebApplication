@@ -44,6 +44,25 @@ namespace Address_Book.Controllers
 
             return View("Index");
         }
+
+        public ActionResult Edit(int id)
+        {
+            var model = models.FirstOrDefault(m => m.Id == id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(AddressBookViewModel model)
+        {
+            var existingModel = models.FirstOrDefault(m => m.Id == model.Id);
+            existingModel.first_name = model.first_name;
+            existingModel.last_name = model.last_name;
+            existingModel.phone = model.phone;
+            existingModel.email = model.email;
+            string jSONString = JsonConvert.SerializeObject(models);
+            readWrite.Write("addressbook.json", "data", jSONString);
+            return RedirectToAction("List");
+        }
     }
 
 
