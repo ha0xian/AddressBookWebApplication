@@ -63,6 +63,16 @@ namespace Address_Book.Controllers
             readWrite.Write("addressbook.json", "data", jSONString);
             return RedirectToAction("List");
         }
+
+        [HttpPost]
+        public ActionResult Delete(int id2del)
+        {
+            models.RemoveAt(id2del - 1);
+            giveID(models);
+            string jSONString = JsonConvert.SerializeObject(models);
+            readWrite.Write("addressbook.json", "data", jSONString);
+            return RedirectToAction("List");
+        }
     }
 
 
