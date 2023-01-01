@@ -7,6 +7,12 @@ namespace Address_Book.Controllers
     {
         List<AddressBookViewModel> models = new List<AddressBookViewModel>();
         JSONReadWrite readWrite = new JSONReadWrite();
+
+        public AddressBookController()
+        {
+            giveID(models);
+            models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
+        }
         public void giveID(List<AddressBookViewModel> models)
         {
             int idCount = 1;
