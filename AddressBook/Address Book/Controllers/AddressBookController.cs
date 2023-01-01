@@ -29,6 +29,21 @@ namespace Address_Book.Controllers
         {
             return View(models);
         }
+
+        public IActionResult Add()
+        {
+            return View();
+        }
+
+        public IActionResult AddAddress(AddressBookViewModel addressBookViewModel)
+        {
+            models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
+            models.Add(addressBookViewModel);
+            string jSONString = JsonConvert.SerializeObject(models);
+            readWrite.Write("addressbook.json", "data", jSONString);
+
+            return View("Index");
+        }
     }
 
 
