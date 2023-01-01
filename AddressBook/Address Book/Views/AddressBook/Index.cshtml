@@ -1,1 +1,10 @@
-﻿
+﻿@model List<Address_Book.Models.AddressBookViewModel>
+
+<h1>View address</h1>
+@foreach (var item in Model)
+{
+        <h3>@item.first_name @item.last_name</h3>
+        <p>@item.phone</p>
+        <p>@item.email</p
+        <hr />
+}
