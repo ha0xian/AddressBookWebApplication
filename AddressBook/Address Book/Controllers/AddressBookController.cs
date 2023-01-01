@@ -48,7 +48,7 @@ namespace Address_Book.Controllers
             models.Add(addressBookViewModel);
             string jSONString = JsonConvert.SerializeObject(models);
             readWrite.Write("addressbook.json", "data", jSONString);
-            return View("Index");
+            return RedirectToAction("Index");
         }
         [HttpPost]
         public ActionResult Delete(int id2del)
