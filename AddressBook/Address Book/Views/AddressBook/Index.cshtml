@@ -3,13 +3,16 @@
 <h1>View address</h1>
 @foreach (var item in Model)
 {
+    @using (Html.BeginForm("Delete", "AddressBook", FormMethod.Post))
+    {
         <h3>@item.first_name @item.last_name</h3>
         <p>@item.phone</p>
         <p>@item.email</p>
         <div class="button-container" style="display: flex; width: 10%; justify-content: space-between">
-        <input type="hidden" name="id2del" value="@item.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm ('Are you sure to delete record with @item.first_name @item.last_name');" />
-        <input type="button" value="Edit" class="btn btn-warning" onclick="location.href='@Url.Action("Edit", "AddressBook", new { id = item.Id })'" />
-    </div>
+            <input type="hidden" name="id2del" value="@item.Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm ('Are you sure to delete record with @item.first_name @item.last_name');" />
+            <input type="button" value="Edit" class="btn btn-warning" onclick="location.href='@Url.Action("Edit", "AddressBook", new { id = item.Id })'" />
+        </div>
         <hr />
+    }
 }

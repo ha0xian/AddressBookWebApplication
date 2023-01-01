@@ -1,8 +1,14 @@
-﻿using Address_Book.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Address_Book.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Reflection;
+
 namespace Address_Book.Controllers
 {
+
     public class AddressBookController : Controller
     {
         List<AddressBookViewModel> models = new List<AddressBookViewModel>();
@@ -13,6 +19,7 @@ namespace Address_Book.Controllers
             giveID(models);
             models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
         }
+
         public void giveID(List<AddressBookViewModel> models)
         {
             int idCount = 1;
@@ -41,8 +48,16 @@ namespace Address_Book.Controllers
             models.Add(addressBookViewModel);
             string jSONString = JsonConvert.SerializeObject(models);
             readWrite.Write("addressbook.json", "data", jSONString);
-
             return View("Index");
+        }
+        [HttpPost]
+        public ActionResult Delete(int id2del)
+        {
+            models.RemoveAt(id2del - 1);
+            giveID(models);
+            string jSONString = JsonConvert.SerializeObject(models);
+            readWrite.Write("addressbook.json", "data", jSONString);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int id)
@@ -61,23 +76,10 @@ namespace Address_Book.Controllers
             existingModel.email = model.email;
             string jSONString = JsonConvert.SerializeObject(models);
             readWrite.Write("addressbook.json", "data", jSONString);
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult Delete(int id2del)
-        {
-            models.RemoveAt(id2del - 1);
-            giveID(models);
-            string jSONString = JsonConvert.SerializeObject(models);
-            readWrite.Write("addressbook.json", "data", jSONString);
-            return RedirectToAction("List");
-        }
     }
-
-
-
-
 
     public class JSONReadWrite
     {
