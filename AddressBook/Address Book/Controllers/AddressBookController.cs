@@ -1,9 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+﻿using Address_Book.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 namespace Address_Book.Controllers
 {
-    public class AddressBook : Controller
+    public class AddressBookController : Controller
     {
+        List<AddressBookViewModel> models = new List<AddressBookViewModel>();
+        JSONReadWrite readWrite = new JSONReadWrite();
+        public void giveID(List<AddressBookViewModel> models)
+        {
+            int idCount = 1;
+            models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
+            foreach (var m in models)
+            {
+                m.Id = idCount;
+                idCount = idCount + 1;
+            }
+            string jSONString = JsonConvert.SerializeObject(models);
+            readWrite.Write("addressbook.json", "data", jSONString);
+        }
         public IActionResult Index()
         {
             return View();
