@@ -12,15 +12,23 @@ namespace Address_Book.Controllers
 
     public class AddressBookController : Controller
     {
+        /// <summary>
+        /// A List of objects of the model
+        /// </summary>
         List<AddressBookViewModel> models = new List<AddressBookViewModel>();
         JSONReadWrite readWrite = new JSONReadWrite();
-
+        /// <summary>
+        /// Constructor that give id to each of the person, and deserialize the json file data
+        /// </summary>
         public AddressBookController()
         {
             giveID(models);
             models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
         }
-
+        /// <summary>
+        /// A function to give Id to each of the person in json file data
+        /// </summary>
+        /// <param name="models"></param>
         public void giveID(List<AddressBookViewModel> models)
         {
             int idCount = 1;
@@ -42,7 +50,11 @@ namespace Address_Book.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// Function to add the data, from input form, and write it to json file
+        /// </summary>
+        /// <param name="addressBookViewModel"></param>
+        /// <returns></returns>
         public IActionResult AddAddress(AddressBookViewModel addressBookViewModel)
         {
             models = JsonConvert.DeserializeObject<List<AddressBookViewModel>>(readWrite.Read("addressbook.json", "data"));
@@ -51,6 +63,11 @@ namespace Address_Book.Controllers
             readWrite.Write("addressbook.json", "data", jSONString);
             return RedirectToAction("Index");
         }
+        /// <summary>
+        /// Function to Delete the record, when the button is pressed. First delete it from the list, then rewrite the json file
+        /// </summary>
+        /// <param name="id2del"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(int id2del)
         {
@@ -60,13 +77,16 @@ namespace Address_Book.Controllers
             readWrite.Write("addressbook.json", "data", jSONString);
             return RedirectToAction("Index");
         }
-
         public ActionResult Edit(int id)
         {
             var model = models.FirstOrDefault(m => m.Id == id);
             return View(model);
         }
-
+        /// <summary>
+        /// Function to Edit the existing data, when the button is pressed, then rewrite the new data into json file when button is submitted
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns> return to index page </returns>
         [HttpPost]
         public ActionResult Edit(AddressBookViewModel model)
         {
@@ -88,6 +108,9 @@ namespace Address_Book.Controllers
 
     public class JSONReadWrite
     {
+        /// <summary>
+        /// Read Json File
+        /// </summary>
         public JSONReadWrite() { }
 
         public string Read(string fileName, string location)
@@ -107,6 +130,9 @@ namespace Address_Book.Controllers
             }
             return jsonResult;
         }
+        /// <summary>
+        /// ReWrite text into Json File
+        /// </summary>
 
         public void Write(string fileName, string location, string jSONString)
         {
