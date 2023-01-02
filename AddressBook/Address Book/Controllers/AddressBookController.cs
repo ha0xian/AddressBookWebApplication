@@ -80,6 +80,10 @@ namespace Address_Book.Controllers
             return RedirectToAction("Index");
         }
 
+        public int getLength()
+        {
+            return models.Count(); 
+        }
     }
 
     public class JSONReadWrite
